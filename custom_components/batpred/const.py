@@ -15,8 +15,6 @@ DEVICE_CAR = "Car Charging"
 
 # Config entry keys
 CONF_PREFIX = "prefix"
-CONF_HA_URL = "ha_url"
-CONF_HA_TOKEN = "ha_token"
 CONF_SCAN_INTERVAL = "scan_interval"
 
 # Platform names

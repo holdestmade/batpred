@@ -5,16 +5,12 @@
         "title": "Batpred Configuration",
         "description": "Configure the Batpred battery prediction integration.",
         "data": {
-          "ha_url": "Home Assistant URL",
-          "ha_token": "Long-Lived Access Token",
           "prefix": "Entity prefix (e.g. predbat)",
           "scan_interval": "Scan interval (seconds)"
         }
       }
     },
     "error": {
-      "cannot_connect": "Failed to connect to Home Assistant",
-      "invalid_token": "Invalid access token",
       "unknown": "Unexpected error"
     },
     "abort": {
