@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import logging
 from typing import Any
 
 from homeassistant.helpers.device_registry import DeviceInfo
@@ -9,6 +10,8 @@ from homeassistant.helpers.update_coordinator import CoordinatorEntity
 
 from .const import DOMAIN, MANUFACTURER, MODEL
 from .coordinator import BatpredCoordinator
+
+_LOGGER = logging.getLogger(__name__)
 
 
 def _device_info(coordinator: BatpredCoordinator, device_name: str) -> DeviceInfo:
@@ -53,7 +56,11 @@ class BatpredEntity(CoordinatorEntity[BatpredCoordinator]):
 
     def _raw_state(self) -> Any:
         """Return raw state value from coordinator data."""
-        return self.coordinator.get_entity_state(self._source_entity_id)
+        source_id = self._source_entity_id
+        if not self.coordinator.data or source_id not in self.coordinator.data:
+            _LOGGER.debug("_raw_state: source entity '%s' not found in coordinator data", source_id)
+            return None
+        return self.coordinator.get_entity_state(source_id)
 
     def _raw_attributes(self) -> dict[str, Any]:
         """Return raw attributes from coordinator data."""

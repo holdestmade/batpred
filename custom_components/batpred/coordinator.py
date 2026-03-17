@@ -23,6 +23,8 @@ class BatpredCoordinator(DataUpdateCoordinator):
         self.prefix = config_entry.data.get(CONF_PREFIX, "predbat")
         scan_interval = config_entry.options.get(CONF_SCAN_INTERVAL, config_entry.data.get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL))
 
+        _LOGGER.debug("Initializing BatpredCoordinator with prefix='%s', scan_interval=%s seconds", self.prefix, scan_interval)
+
         super().__init__(
             hass,
             _LOGGER,
@@ -49,12 +51,18 @@ class BatpredCoordinator(DataUpdateCoordinator):
                     or entity_id.startswith(f"input_boolean.{prefix}_")
                     or entity_id.startswith(f"input_select.{prefix}_")
                 ):
+                    _LOGGER.debug("Found matching entity: %s (state=%s)", entity_id, state_obj.state)
                     data[entity_id] = {
                         "state": state_obj.state,
                         "attributes": dict(state_obj.attributes),
                     }
         except Exception as err:
             raise UpdateFailed(f"Error fetching batpred entity states: {err}") from err
+
+        if data:
+            _LOGGER.debug("Coordinator update complete: found %d matching entities", len(data))
+        else:
+            _LOGGER.warning("Coordinator update: no entities found matching prefix '%s' — check that Predbat is running", prefix)
 
         return data
 

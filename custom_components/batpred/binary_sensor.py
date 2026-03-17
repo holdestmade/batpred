@@ -95,7 +95,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, asyn
     coordinator: BatpredCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     entities = [BatpredBinarySensor(coordinator, description) for description in BINARY_SENSOR_DESCRIPTIONS]
+    _LOGGER.debug("Setting up %d Batpred binary sensor entities", len(entities))
     async_add_entities(entities)
+    _LOGGER.debug("Batpred binary_sensor platform setup complete")
 
 
 class BatpredBinarySensor(BatpredEntity, BinarySensorEntity):
@@ -113,6 +115,7 @@ class BatpredBinarySensor(BatpredEntity, BinarySensorEntity):
             icon=description.icon,
         )
         self.entity_description = description
+        _LOGGER.debug("Initialized binary sensor '%s' (source: binary_sensor.%s%s)", description.name, coordinator.prefix, description.source_suffix)
 
     @property
     def _source_entity_id(self) -> str:

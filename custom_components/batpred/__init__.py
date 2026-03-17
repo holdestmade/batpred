@@ -32,6 +32,7 @@ async def async_setup(hass: HomeAssistant, config: dict) -> bool:
 
 async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> bool:
     """Set up Batpred from a config entry."""
+    _LOGGER.debug("Setting up Batpred config entry: %s", config_entry.entry_id)
     coordinator = BatpredCoordinator(hass, config_entry)
 
     # Fetch initial data
@@ -42,6 +43,7 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry) -> b
 
     # Set up all platforms
     await hass.config_entries.async_forward_entry_setups(config_entry, PLATFORMS)
+    _LOGGER.debug("Batpred platform setup complete for entry: %s", config_entry.entry_id)
 
     # Register services
     _register_services(hass, coordinator)
