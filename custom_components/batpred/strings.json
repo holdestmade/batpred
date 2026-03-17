@@ -2,11 +2,89 @@
   "config": {
     "step": {
       "user": {
-        "title": "Batpred Configuration",
-        "description": "Configure the Batpred battery prediction integration.",
+        "title": "Batpred – Basic Settings",
+        "description": "Configure the core settings for the Batpred battery prediction integration.",
         "data": {
           "prefix": "Entity prefix (e.g. predbat)",
-          "scan_interval": "Scan interval (seconds)"
+          "timezone": "Timezone (e.g. Europe/London)",
+          "scan_interval": "Scan interval (seconds)",
+          "threads": "Threads for plan calculation (auto, 0, or a number)"
+        }
+      },
+      "rates": {
+        "title": "Batpred – Currency & Rates",
+        "description": "Configure currency symbols and Octopus Energy rate sensors.",
+        "data": {
+          "currency_symbols": "Currency symbols (one per line, e.g. £ then p)",
+          "metric_octopus_import": "Octopus import rate sensor",
+          "metric_octopus_export": "Octopus export rate sensor",
+          "metric_standing_charge": "Standing charge sensor or value",
+          "octopus_saving_session": "Octopus saving session binary sensor",
+          "octopus_saving_session_octopoints_per_penny": "Octopoints per penny conversion"
+        }
+      },
+      "solar": {
+        "title": "Batpred – Solar & Forecast",
+        "description": "Configure Solcast solar forecast settings.",
+        "data": {
+          "solcast_api_key": "Solcast API key",
+          "solcast_host": "Solcast host URL",
+          "solcast_poll_hours": "Solcast polling interval (hours)"
+        }
+      },
+      "inverter": {
+        "title": "Batpred – Inverter Configuration",
+        "description": "Configure inverter type, count and power limits. For multiple inverters enter one value per line.",
+        "data": {
+          "inverter_type": "Inverter type (e.g. GE)",
+          "num_inverters": "Number of inverters",
+          "inverter_limit": "Max AC output per inverter in watts (one per line)",
+          "inverter_limit_charge": "Max charge rate per inverter in watts (one per line)",
+          "inverter_limit_discharge": "Max discharge rate per inverter in watts (one per line)",
+          "inverter_reserve_max": "Maximum reserve setting (%)",
+          "balance_inverters_seconds": "Balance inverters interval (seconds, 0 to disable)"
+        }
+      },
+      "sensors": {
+        "title": "Batpred – Sensor Mappings",
+        "description": "Map Home Assistant sensor entities to Batpred. Enter one entity ID per line. Supports re: regex prefix.",
+        "data": {
+          "geserial": "Inverter serial regex (e.g. re:sensor.givtcp_(.+)_soc_kwh)",
+          "load_today": "Load energy today sensors (one per line)",
+          "import_today": "Import energy today sensors (one per line)",
+          "export_today": "Export energy today sensors (one per line)",
+          "pv_today": "PV energy today sensors (one per line)",
+          "battery_power": "Battery power sensors (one per line)",
+          "pv_power": "PV power sensors (one per line)",
+          "load_power": "Load power sensors (one per line)",
+          "grid_power": "Grid power sensors (one per line)",
+          "soc_kw": "Battery SoC (kWh) sensors (one per line)",
+          "soc_max": "Battery capacity sensors (one per line)",
+          "inverter_mode": "Inverter mode select entities (one per line)"
+        }
+      },
+      "controls": {
+        "title": "Batpred – Control Mappings",
+        "description": "Map Home Assistant control entities to Batpred. Enter one entity ID per line.",
+        "data": {
+          "charge_rate": "Charge rate control entities (one per line)",
+          "discharge_rate": "Discharge rate control entities (one per line)",
+          "reserve": "Reserve control entities (one per line)",
+          "charge_start_time": "Charge start time entities (one per line)",
+          "charge_end_time": "Charge end time entities (one per line)",
+          "discharge_start_time": "Discharge start time entities (one per line)",
+          "discharge_end_time": "Discharge end time entities (one per line)"
+        }
+      },
+      "advanced": {
+        "title": "Batpred – Advanced Settings",
+        "description": "Fine-tune advanced prediction and scaling options.",
+        "data": {
+          "load_filter_threshold": "Max zero-load gap before gap fill (minutes, 1–1440)",
+          "battery_scaling": "Battery scaling factor (one per inverter, one per line)",
+          "import_export_scaling": "Import/export data scaling factor",
+          "days_previous": "Historical load days (one value per line, e.g. 7)",
+          "forecast_hours": "Forecast horizon (hours, 1–168)"
         }
       }
     },
@@ -15,6 +93,95 @@
     },
     "abort": {
       "already_configured": "Batpred is already configured"
+    }
+  },
+  "options": {
+    "step": {
+      "init": {
+        "title": "Batpred – Basic Settings",
+        "description": "Update the core Batpred settings.",
+        "data": {
+          "scan_interval": "Scan interval (seconds)",
+          "timezone": "Timezone (e.g. Europe/London)",
+          "threads": "Threads for plan calculation (auto, 0, or a number)"
+        }
+      },
+      "rates": {
+        "title": "Batpred – Currency & Rates",
+        "description": "Update currency symbols and Octopus Energy rate sensors.",
+        "data": {
+          "currency_symbols": "Currency symbols (one per line, e.g. £ then p)",
+          "metric_octopus_import": "Octopus import rate sensor",
+          "metric_octopus_export": "Octopus export rate sensor",
+          "metric_standing_charge": "Standing charge sensor or value",
+          "octopus_saving_session": "Octopus saving session binary sensor",
+          "octopus_saving_session_octopoints_per_penny": "Octopoints per penny conversion"
+        }
+      },
+      "solar": {
+        "title": "Batpred – Solar & Forecast",
+        "description": "Update Solcast solar forecast settings.",
+        "data": {
+          "solcast_api_key": "Solcast API key",
+          "solcast_host": "Solcast host URL",
+          "solcast_poll_hours": "Solcast polling interval (hours)"
+        }
+      },
+      "inverter": {
+        "title": "Batpred – Inverter Configuration",
+        "description": "Update inverter type, count and power limits. For multiple inverters enter one value per line.",
+        "data": {
+          "inverter_type": "Inverter type (e.g. GE)",
+          "num_inverters": "Number of inverters",
+          "inverter_limit": "Max AC output per inverter in watts (one per line)",
+          "inverter_limit_charge": "Max charge rate per inverter in watts (one per line)",
+          "inverter_limit_discharge": "Max discharge rate per inverter in watts (one per line)",
+          "inverter_reserve_max": "Maximum reserve setting (%)",
+          "balance_inverters_seconds": "Balance inverters interval (seconds, 0 to disable)"
+        }
+      },
+      "sensors": {
+        "title": "Batpred – Sensor Mappings",
+        "description": "Update sensor entity mappings. Enter one entity ID per line. Supports re: regex prefix.",
+        "data": {
+          "geserial": "Inverter serial regex (e.g. re:sensor.givtcp_(.+)_soc_kwh)",
+          "load_today": "Load energy today sensors (one per line)",
+          "import_today": "Import energy today sensors (one per line)",
+          "export_today": "Export energy today sensors (one per line)",
+          "pv_today": "PV energy today sensors (one per line)",
+          "battery_power": "Battery power sensors (one per line)",
+          "pv_power": "PV power sensors (one per line)",
+          "load_power": "Load power sensors (one per line)",
+          "grid_power": "Grid power sensors (one per line)",
+          "soc_kw": "Battery SoC (kWh) sensors (one per line)",
+          "soc_max": "Battery capacity sensors (one per line)",
+          "inverter_mode": "Inverter mode select entities (one per line)"
+        }
+      },
+      "controls": {
+        "title": "Batpred – Control Mappings",
+        "description": "Update control entity mappings. Enter one entity ID per line.",
+        "data": {
+          "charge_rate": "Charge rate control entities (one per line)",
+          "discharge_rate": "Discharge rate control entities (one per line)",
+          "reserve": "Reserve control entities (one per line)",
+          "charge_start_time": "Charge start time entities (one per line)",
+          "charge_end_time": "Charge end time entities (one per line)",
+          "discharge_start_time": "Discharge start time entities (one per line)",
+          "discharge_end_time": "Discharge end time entities (one per line)"
+        }
+      },
+      "advanced": {
+        "title": "Batpred – Advanced Settings",
+        "description": "Update advanced prediction and scaling options.",
+        "data": {
+          "load_filter_threshold": "Max zero-load gap before gap fill (minutes, 1–1440)",
+          "battery_scaling": "Battery scaling factor (one per inverter, one per line)",
+          "import_export_scaling": "Import/export data scaling factor",
+          "days_previous": "Historical load days (one value per line, e.g. 7)",
+          "forecast_hours": "Forecast horizon (hours, 1–168)"
+        }
+      }
     }
   }
 }
