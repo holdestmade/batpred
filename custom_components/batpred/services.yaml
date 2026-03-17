@@ -1,0 +1,41 @@
+force_charge:
+  name: Force Charge
+  description: Force the battery to charge immediately.
+  fields:
+    charge_rate:
+      name: Charge Rate
+      description: Charge rate in watts (optional, uses inverter default if omitted).
+      selector:
+        number:
+          min: 0
+          max: 10000
+          unit_of_measurement: W
+    target_soc:
+      name: Target SOC
+      description: Target state of charge percentage (optional).
+      selector:
+        number:
+          min: 0
+          max: 100
+          unit_of_measurement: "%"
+
+force_discharge:
+  name: Force Discharge
+  description: Force the battery to discharge immediately.
+  fields:
+    discharge_rate:
+      name: Discharge Rate
+      description: Discharge rate in watts (optional, uses inverter default if omitted).
+      selector:
+        number:
+          min: 0
+          max: 10000
+          unit_of_measurement: W
+
+reset_plan:
+  name: Reset Plan
+  description: Reset the Batpred plan and re-run optimisation.
+
+refresh_rates:
+  name: Refresh Rates
+  description: Force a refresh of electricity rates (e.g. Octopus Energy).
