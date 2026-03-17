@@ -89,7 +89,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, asyn
     coordinator: BatpredCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     entities = [BatpredSelect(coordinator, description) for description in SELECT_DESCRIPTIONS]
+    _LOGGER.debug("Setting up %d Batpred select entities", len(entities))
     async_add_entities(entities)
+    _LOGGER.debug("Batpred select platform setup complete")
 
 
 class BatpredSelect(BatpredEntity, SelectEntity):

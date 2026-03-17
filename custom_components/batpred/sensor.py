@@ -460,7 +460,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, asyn
     coordinator: BatpredCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     entities = [BatpredSensor(coordinator, description) for description in SENSOR_DESCRIPTIONS]
+    _LOGGER.debug("Setting up %d Batpred sensor entities", len(entities))
     async_add_entities(entities)
+    _LOGGER.debug("Batpred sensor platform setup complete")
 
 
 class BatpredSensor(BatpredEntity, SensorEntity):
@@ -478,6 +480,7 @@ class BatpredSensor(BatpredEntity, SensorEntity):
             icon=description.icon,
         )
         self.entity_description = description
+        _LOGGER.debug("Initialized sensor '%s' (source: %s%s)", description.name, coordinator.prefix, description.source_suffix)
 
     @property
     def _source_entity_id(self) -> str:
@@ -489,13 +492,14 @@ class BatpredSensor(BatpredEntity, SensorEntity):
         """Return the state of the sensor."""
         state = self._raw_state()
         if state is None or state in ("unknown", "unavailable"):
+            _LOGGER.debug("native_value for '%s': state is %s, returning None", self.entity_description.key, state)
             return None
         # Try numeric conversion for numeric sensors
         if self.entity_description.native_unit_of_measurement and self.entity_description.device_class not in (SensorDeviceClass.TIMESTAMP,):
             try:
                 return float(state)
             except (ValueError, TypeError):
-                pass
+                _LOGGER.debug("native_value for '%s': could not convert '%s' to float, returning as string", self.entity_description.key, state)
         return state
 
     @property

@@ -178,7 +178,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, asyn
     coordinator: BatpredCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     entities = [BatpredNumber(coordinator, description) for description in NUMBER_DESCRIPTIONS]
+    _LOGGER.debug("Setting up %d Batpred number entities", len(entities))
     async_add_entities(entities)
+    _LOGGER.debug("Batpred number platform setup complete")
 
 
 class BatpredNumber(BatpredEntity, NumberEntity):

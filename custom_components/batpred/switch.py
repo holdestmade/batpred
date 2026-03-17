@@ -112,7 +112,9 @@ async def async_setup_entry(hass: HomeAssistant, config_entry: ConfigEntry, asyn
     coordinator: BatpredCoordinator = hass.data[DOMAIN][config_entry.entry_id]
 
     entities = [BatpredSwitch(coordinator, description) for description in SWITCH_DESCRIPTIONS]
+    _LOGGER.debug("Setting up %d Batpred switch entities", len(entities))
     async_add_entities(entities)
+    _LOGGER.debug("Batpred switch platform setup complete")
 
 
 class BatpredSwitch(BatpredEntity, SwitchEntity):
