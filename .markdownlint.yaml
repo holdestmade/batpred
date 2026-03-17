@@ -1,3 +1,0 @@
-MD013: false   # Disable line length rule
-MD046: false   # Allow fenced code blocks
-MD041: false   # Don't require H1 as first line
