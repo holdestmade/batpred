@@ -1,5 +1,4 @@
 {
   "name" : "predbat",
-  "render_readme" : true,
-  "persistent_directory" : "config"
+  "render_readme" : true
 }
