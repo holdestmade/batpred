@@ -292,6 +292,7 @@ class OptionsFlowHandler(config_entries.OptionsFlow):
 
         schema = vol.Schema(
             {
+                vol.Optional(CONF_PREFIX, default=self._get(CONF_PREFIX, "predbat")): str,
                 vol.Optional(
                     CONF_SCAN_INTERVAL,
                     default=self._get(CONF_SCAN_INTERVAL, DEFAULT_SCAN_INTERVAL),
