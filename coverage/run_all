@@ -1,3 +1,0 @@
-source setup.csh
-rm predbat.log
-python3 ../apps/predbat/unit_test.py $*
